@@ -1,11 +1,27 @@
 {
   "name": "stepwise",
+  "version": "0.0.1",
+  "author": {
+    "name": "artfuldev",
+    "email": "hello@artful.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artfuldev/stepwise"
+  },
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "fp-ts": "^2.16.9",
+    "rxjs": "^7.8.1"
   }
 }
