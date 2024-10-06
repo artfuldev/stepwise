@@ -14,8 +14,8 @@ describe("app", () => {
   };
 
   test("should handshake", () => {
-    response("st3p version 2").subscribe((lines) => {
-      expect(lines).toEqual(["st3p version 2 ok"]);
+    response("st3p version 2").subscribe(([line]) => {
+      expect(line).toEqual("st3p version 2 ok");
     });
   });
 
