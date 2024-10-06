@@ -23,7 +23,6 @@ COPY . .
 
 # [optional] tests & build
 ENV NODE_ENV=production
-RUN bun run test
 RUN bun test
 # RUN bun run build
 

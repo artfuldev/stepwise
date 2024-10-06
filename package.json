@@ -12,8 +12,7 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun run src/index.ts",
-    "test": "bun run src/index.ts < ./resources/inputs"
+    "start": "bun run src/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
