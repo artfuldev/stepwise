@@ -47,4 +47,13 @@ describe("app", () => {
       expect(move).toBeOneOf(moves);
     });
   });
+
+  test("should quit", () => {
+    const line$ = new Subject<string>();
+    const { exit } = app({ stdin: { line$ } });
+    exit
+      .pipe(reduce((lines, line) => lines.concat(line), [] as number[]))
+      .subscribe(([exit]) => expect(exit).toEqual(0));
+    line$.next("quit");
+  });
 });
