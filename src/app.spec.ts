@@ -48,6 +48,21 @@ describe("app", () => {
     });
   });
 
+  test("should error out on unknown commands", () => {
+    const line$ = new Subject<string>();
+    const { stderr } = app({ stdin: { line$ } });
+    stderr
+      .pipe(reduce((lines, line) => lines.concat(line), [] as string[]))
+      .subscribe(([err]) => expect(err).toBeTypeOf("string"));
+    line$.next("unknown command");
+  });
+
+  test("should not have outputs on unknown commands", () => {
+    response("unknown command").subscribe((lines) =>
+      expect(lines).toHaveLength(0)
+    );
+  });
+
   test("should quit", () => {
     const line$ = new Subject<string>();
     const { exit } = app({ stdin: { line$ } });
