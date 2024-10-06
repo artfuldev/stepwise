@@ -4,9 +4,9 @@ import type { Side } from "./side";
 
 export type Board = {
   size: number;
-  playable: BigInt;
-  [Side.X]: BigInt;
-  [Side.O]: BigInt;
+  playable: bigint;
+  [Side.X]: bigint;
+  [Side.O]: bigint;
 };
 
 const expected = new Set("0123456789/_.xo".split(""));
