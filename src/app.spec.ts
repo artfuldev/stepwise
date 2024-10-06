@@ -31,4 +31,20 @@ describe("app", () => {
       ]);
     });
   });
+
+  test("should return best move", () => {
+    response("move 3_/3_/3_ x").subscribe(([line]) => {
+      expect(line).toStartWith("best ");
+    });
+  });
+
+  test("should return valid move", () => {
+    const columns = "abc".split("");
+    const rows = [1, 2, 3];
+    const moves = columns.map((c) => rows.map((r) => [c, r].join("")));
+    response("move 3_/3_/3_ x").subscribe(([line]) => {
+      const move = line.slice(5);
+      expect(move).toBeOneOf(moves);
+    });
+  });
 });
