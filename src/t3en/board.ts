@@ -55,9 +55,7 @@ export const parse: Parser<Board> = (str) => {
   let count = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
-    if (!expected.has(char)) {
-      return board(cells2d, str.slice(i));
-    }
+    if (!expected.has(char)) return board(cells2d, str.slice(i));
     if (char === "/") {
       cells2d.push([]);
       x++;
