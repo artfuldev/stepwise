@@ -1,26 +1,22 @@
 import { filter, map, mergeWith, of, share, switchMap } from "rxjs";
-import type { ParseFailure, ParseSuccess } from "./parser";
-import { type Command, run, parse } from "./st3p";
+import { run, parse } from "./st3p";
 import type { Sources } from "./sources";
 import type { Sinks } from "./sinks";
 
 export const app = ({ stdin: { line$ } }: Sources): Sinks => {
   const parsed$ = line$.pipe(map(parse));
-  const command$ = parsed$.pipe(
-    filter((x) => x.type === "success"),
-    map((x) => (x as ParseSuccess<Command>).parsed)
-  );
-  const execute$ = command$.pipe(
-    switchMap((command) => of(run(command))),
+  const sinks$ = parsed$.pipe(
+    filter((p) => p.type === "success"),
+    switchMap(({ parsed }) => of(run(parsed))),
     share()
   );
   return {
     stderr: parsed$.pipe(
-      filter((x) => x.type === "failure"),
-      map((x) => (x as ParseFailure).reason),
-      mergeWith(execute$.pipe(switchMap((x) => x.stderr)))
+      filter((p) => p.type === "failure"),
+      map(({ reason }) => reason),
+      mergeWith(sinks$.pipe(switchMap(({ stderr }) => stderr)))
     ),
-    stdout: execute$.pipe(switchMap((x) => x.stdout)),
-    exit: execute$.pipe(switchMap((x) => x.exit)),
+    stdout: sinks$.pipe(switchMap(({ stdout }) => stdout)),
+    exit: sinks$.pipe(switchMap(({ exit }) => exit)),
   };
 };
