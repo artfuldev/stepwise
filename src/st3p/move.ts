@@ -3,7 +3,7 @@ import * as P from "../parser";
 import * as T from "../t3en";
 import { best } from "../core/best";
 import type { Sinks } from "../sinks";
-import { EMPTY, catchError, filter, map, of, share, take } from "rxjs";
+import { EMPTY, catchError, filter, first, map, of, share } from "rxjs";
 import { position } from "../core/position";
 
 type Infinite = ["infinite"];
@@ -86,7 +86,7 @@ export const move = ([, [board, side], _, winLength]: Move): Sinks => {
   const best$ = best(board, side, winLength).pipe(
     map(position(board)),
     map((pos) => ["best", pos].join(" ")),
-    take(1),
+    first(),
     share()
   );
   return {
