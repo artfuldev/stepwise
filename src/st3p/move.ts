@@ -19,11 +19,18 @@ const TimeRemaining = (milliseconds: Milliseconds): TimeRemaining => [
   "time-remaining",
   milliseconds,
 ];
-export type Move = ["move", T.State, Infinite | TimePerMove | TimeRemaining];
+type WinLength = number;
+export type Move = [
+  "move",
+  T.State,
+  Infinite | TimePerMove | TimeRemaining,
+  WinLength
+];
 const Move = (
   state: T.State,
-  time: Infinite | TimePerMove | TimeRemaining
-): Move => ["move", state, time];
+  time: Infinite | TimePerMove | TimeRemaining,
+  winLength: number
+): Move => ["move", state, time, winLength];
 
 export const parse = pipe(
   P.and(
@@ -53,9 +60,26 @@ export const parse = pipe(
         P.any,
         P.map(() => Infinite)
       )
+    ),
+    P.or(
+      pipe(
+        P.and(
+          P.one_or_more(P.whitespace),
+          P.token("win-length"),
+          P.one_or_more(P.whitespace),
+          P.non_zero_positive_integer
+        ),
+        P.map(([, , , winLength]) => winLength)
+      ),
+      pipe(
+        P.any,
+        P.map(() => -1)
+      )
     )
   ),
-  P.map(([, , state, time]) => Move(state, time))
+  P.map(([, , state, time, winLength]) =>
+    Move(state, time, winLength === -1 ? state[0].size : winLength)
+  )
 );
 
 export const move = ([, [board]]: Move): Sinks => {
