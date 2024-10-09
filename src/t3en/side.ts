@@ -5,4 +5,6 @@ export enum Side {
   O = "o",
 }
 
+export const other = (side: Side): Side => (side === Side.X ? Side.O : Side.X);
+
 export const parse: Parser<Side> = or(token(Side.X), token(Side.O));
