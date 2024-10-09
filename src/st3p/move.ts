@@ -3,8 +3,18 @@ import * as P from "../parser";
 import * as T from "../t3en";
 import { best } from "../core/best";
 import type { Sinks } from "../sinks";
-import { EMPTY, catchError, filter, first, map, of, share } from "rxjs";
+import {
+  EMPTY,
+  catchError,
+  filter,
+  first,
+  map,
+  of,
+  share,
+  timeout,
+} from "rxjs";
 import { position } from "../core/position";
+import { Duration } from "luxon";
 
 type Infinite = ["infinite"];
 const Infinite: Infinite = ["infinite"];
@@ -82,11 +92,41 @@ export const parse = pipe(
   )
 );
 
-export const move = ([, [board, side], _, winLength]: Move): Sinks => {
+const TOLERANCE = Duration.fromMillis(100);
+
+const duration = ([, [{ playable, size }], time]: Move): Duration => {
+  switch (time[0]) {
+    case "infinite":
+      return Duration.fromObject({ milliseconds: Number.MAX_SAFE_INTEGER });
+    case "time-per-move":
+      return Duration.fromObject({ milliseconds: time[1] });
+    case "time-remaining":
+      return Duration.fromObject({
+        milliseconds: Math.floor(
+          time[1] /
+            Math.floor(
+              (playable
+                .toString(2)
+                .padStart(size * size, "0")
+                .split("")
+                .filter((x) => x === "1").length +
+                1) /
+                2
+            )
+        ),
+      });
+  }
+};
+
+export const move = (move: Move): Sinks => {
+  const [, [board, side], , winLength] = move;
   const best$ = best(board, side, winLength).pipe(
     map(position(board)),
     map((pos) => ["best", pos].join(" ")),
     first(),
+    timeout({
+      first: duration(move).minus(TOLERANCE).toMillis(),
+    }),
     share()
   );
   return {
