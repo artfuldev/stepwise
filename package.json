@@ -15,13 +15,15 @@
     "start": "bun run src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/luxon": "^3.4.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "fp-ts": "^2.16.9",
+    "luxon": "^3.5.0",
     "rxjs": "^7.8.1"
   }
 }
