@@ -78,3 +78,24 @@ export const parse: Parser<Board> = (str) => {
   }
   return board(cells2d, "");
 };
+
+export const string = ({ playable, x, o, size }: Board): string => {
+  const strings = {
+    playable: playable.toString(2).padStart(size * size, "0"),
+    x: x.toString(2).padStart(size * size, "0"),
+    o: o.toString(2).padStart(size * size, "0"),
+  };
+  return strings.playable
+    .split("")
+    .map(
+      (p, i) =>
+        (strings.x.charAt(i) === "1"
+          ? "x"
+          : strings.o.charAt(i) === "1"
+          ? "o"
+          : p === "1"
+          ? "_"
+          : ".") + (i % size === size - 1 ? "\n" : " ")
+    )
+    .join("");
+};
