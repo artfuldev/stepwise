@@ -1,51 +1,50 @@
 export const wins = (size: number, winLength = size): bigint[] => {
+  winLength = Math.min(size, winLength);
+  const threshold = size - winLength + 1;
   const wins: bigint[] = [];
 
   // Horizontal
-  for (let row = 0; row < size; row++) {
-    let line = ((1n << BigInt(winLength)) - 1n) << BigInt(row * size);
-    wins.push(line);
-    for (let col = 1; col <= size - winLength; col++) {
-      wins.push(line << BigInt(col));
-    }
+  let thresh = threshold === 1 ? BigInt(size) : BigInt(threshold);
+  let win = (1n << BigInt(winLength)) - 1n;
+  let shift = 1n;
+  for (let i = 0; i < size * threshold; i++) {
+    wins.push(win);
+    shift = (i + 1) % threshold === 0 ? thresh : 1n;
+    win = win << shift;
   }
 
   // Vertical
-  for (let col = 0; col < size; col++) {
-    let line = 0n;
-    for (let k = 0; k < winLength; k++) {
-      line |= 1n << BigInt(k * size + col);
-    }
-    wins.push(line);
-    for (let row = 1; row <= size - winLength; row++) {
-      wins.push(line << BigInt(row * size));
-    }
+  win = 0n;
+  for (let k = 0; k < winLength; k++) {
+    win |= 1n << BigInt(k * size);
+  }
+  shift = 1n;
+  for (let i = 0; i < size * threshold; i++) {
+    wins.push(win);
+    win = win << shift;
   }
 
   // Diagonal
-  let diagonal = 0n;
+  win = 0n;
+  thresh = BigInt(threshold);
   for (let k = 0; k < winLength; k++) {
-    diagonal |= 1n << BigInt(k * size + k);
+    win |= 1n << BigInt(k * size + k);
   }
-  for (let row = 0; row <= size - winLength; row++) {
-    let line = diagonal << BigInt(row * size);
-    wins.push(line);
-    for (let col = 1; col <= size - winLength; col++) {
-      wins.push(line << BigInt(col));
-    }
+  for (let i = 0; i < threshold * threshold; i++) {
+    wins.push(win);
+    shift = (i + 1) % threshold === 0 ? thresh : 1n;
+    win = win << shift;
   }
 
   // Anti Diagonal
-  let antiDiagonal = 0n;
+  win = 0n;
   for (let k = 0; k < winLength; k++) {
-    antiDiagonal |= 1n << BigInt(k * size + (winLength - 1 - k));
+    win |= 1n << BigInt(k * size + (winLength - 1 - k));
   }
-  for (let row = 0; row <= size - winLength; row++) {
-    let line = antiDiagonal << BigInt(row * size);
-    wins.push(line);
-    for (let col = 1; col <= size - winLength; col++) {
-      wins.push(line << BigInt(col));
-    }
+  for (let i = 0; i < threshold * threshold; i++) {
+    wins.push(win);
+    shift = (i + 1) % threshold === 0 ? thresh : 1n;
+    win = win << shift;
   }
   return wins;
 };
