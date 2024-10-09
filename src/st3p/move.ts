@@ -82,8 +82,8 @@ export const parse = pipe(
   )
 );
 
-export const move = ([, [board]]: Move): Sinks => {
-  const best$ = best(board).pipe(
+export const move = ([, [board, side], _, winLength]: Move): Sinks => {
+  const best$ = best(board, side, winLength).pipe(
     map(position(board)),
     map((pos) => ["best", pos].join(" "))
   );
