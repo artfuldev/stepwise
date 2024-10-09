@@ -23,9 +23,9 @@ describe("best", () => {
       x: BigInt("0b100011000"),
       o: BigInt("0b000000011"),
     };
-    best(board, Side.X, 3).subscribe(move => {
+    best(board, Side.X, 3).subscribe((move) => {
       expect(move).toBe(BigInt("0b000100000"));
       done();
-    })
+    });
   });
 });
