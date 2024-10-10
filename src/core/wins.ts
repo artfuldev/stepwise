@@ -1,12 +1,14 @@
-const wins_cache = new Map<string, bigint[]>();
+const cache = new Map<string, Win[]>();
 
-export const wins = (size: number, winLength = size): bigint[] => {
+type Win = bigint;
+
+export const wins = (size: number, winLength = size): Win[] => {
   const cache_key = `${size}:${winLength}`;
-  const cached = wins_cache.get(cache_key);
+  const cached = cache.get(cache_key);
   if (cached != null) return cached;
   winLength = Math.min(size, winLength);
   const threshold = size - winLength + 1;
-  const wins: bigint[] = [];
+  const wins: Win[] = [];
   
   let thresh = threshold === 1 ? BigInt(size) : BigInt(threshold);
   let horizontal = (1n << BigInt(winLength)) - 1n;
@@ -38,6 +40,6 @@ export const wins = (size: number, winLength = size): bigint[] => {
     diagonal = diagonal << shift;
     anti = anti << shift;
   }
-  wins_cache.set(cache_key, wins);
+  cache.set(cache_key, wins);
   return wins;
 };
