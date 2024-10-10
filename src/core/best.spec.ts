@@ -23,11 +23,13 @@ describe("best", () => {
   });
 
   test("should return assured win move for x", (done) => {
-    const b = board("7_/3_3o_/2_x4_/3_x3_/4_x2_/7_/7_");
-    const expected: Move[] = [1n << 8n, 1n << 40n];
-    best(b, Side.X, 5).subscribe((move) => {
-      expect(move).toBeOneOf(expected);
-      done();
-    });
+    const expected: Move[] = [8n, 40n].map((x) => 1n << x);
+    best(board("7_/3_3o_/2_x4_/3_x3_/4_x2_/7_/7_"), Side.X, 5).subscribe(
+      (move) => {
+        expect(move).toBeOneOf(expected);
+        done();
+      }
+    );
+  });
   });
 });
