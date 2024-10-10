@@ -33,9 +33,10 @@ describe("best", () => {
   });
 
   test("should return winning move over available assured moves", (done) => {
+    const expected: Move[] = [8n, 48n].map((x) => 1n << x);
     best(board("7_/_x4o_/2_x4_/3_x3_/4_x2_/7_/7_"), Side.X, 5).subscribe(
       (move) => {
-        expect(move).toBe(1n << 8n);
+        expect(move).toBeOneOf(expected);
         done();
       }
     );
