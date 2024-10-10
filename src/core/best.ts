@@ -15,8 +15,7 @@ export const best = (
 ): Observable<Move> => {
   const evaluations = moves(board)
     .map(
-      (move) =>
-        [move, evaluate(play(board, side, move), winLength)] as const
+      (move) => [move, evaluate(play(board, side, move), winLength)] as const
     )
     .sort(([, a], [, b]) => (side === Side.X ? b - a : a - b));
   if (evaluations.length === 0)
