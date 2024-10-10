@@ -16,7 +16,7 @@ export const assurances = (size: number, assurance = size - 1): Assurance[] => {
   const biSize = BigInt(size);
   const biThreshold = BigInt(threshold);
   const biAssurance = BigInt(assurance);
-  let thresh = threshold === 1 ? biSize : biThreshold;
+  let biSizeThresholdDifference = biSize - biThreshold + 1n;
   let horizontal_playable = (1n << biAssurance) + 1n;
   let horizontal_played = (1n << biAssurance) - 2n;
   let vertical_playable = 1n;
@@ -31,7 +31,7 @@ export const assurances = (size: number, assurance = size - 1): Assurance[] => {
   for (let i = 0; i < size * threshold; i++) {
     assurances.push([horizontal_playable, horizontal_played]);
     assurances.push([vertical_playable, vertical_played]);
-    shift = (i + 1) % threshold === 0 ? thresh : 1n;
+    shift = (i + 1) % threshold === 0 ? biSizeThresholdDifference : 1n;
     horizontal_playable = horizontal_playable << shift;
     horizontal_played = horizontal_played << shift;
     vertical_playable = vertical_playable << 1n;
@@ -60,7 +60,7 @@ export const assurances = (size: number, assurance = size - 1): Assurance[] => {
   for (let i = 0; i < threshold * threshold; i++) {
     assurances.push([diagonal_playable, diagonal_played]);
     assurances.push([anti_playable, anti_played]);
-    shift = (i + 1) % threshold === 0 ? biThreshold : 1n;
+    shift = (i + 1) % threshold === 0 ? biSizeThresholdDifference : 1n;
     diagonal_playable = diagonal_playable << shift;
     diagonal_played = diagonal_played << shift;
     anti_playable = anti_playable << shift;
