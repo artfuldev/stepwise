@@ -1,5 +1,4 @@
-import type { Board, Side } from "../t3en";
-import { other } from "../t3en/side";
+import type { Board } from "../t3en";
 import { wins } from "./wins";
 
 let ones_cache = new Map<bigint, number>();
@@ -16,10 +15,7 @@ const ones = (bigint: bigint): number => {
   return count;
 };
 
-export const evaluate = (
-  board: Board,
-  winLength: number
-): number => {
+export const evaluate = (board: Board, winLength: number): number => {
   const lines = wins(board.size, winLength);
   let score = 0;
   for (const line of lines) {
