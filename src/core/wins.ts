@@ -13,7 +13,7 @@ export const wins = (size: number, winLength = size): Win[] => {
   const biSize = BigInt(size);
   const biThreshold = BigInt(threshold);
   const biWinLength = BigInt(winLength);
-  let thresh = threshold === 1 ? biSize : biThreshold;
+  let biSizeThresholdDifference = biSize - biThreshold + 1n;
   let horizontal = (1n << biWinLength) - 1n;
   let vertical = 0n;
   for (let k = 0; k < winLength; k++) {
@@ -24,7 +24,7 @@ export const wins = (size: number, winLength = size): Win[] => {
   for (let i = 0; i < size * threshold; i++) {
     wins.push(horizontal);
     wins.push(vertical);
-    shift = (i + 1) % threshold === 0 ? thresh : 1n;
+    shift = (i + 1) % threshold === 0 ? biSizeThresholdDifference : 1n;
     horizontal = horizontal << shift;
     vertical = vertical << 1n;
   }
@@ -42,7 +42,7 @@ export const wins = (size: number, winLength = size): Win[] => {
   for (let i = 0; i < threshold * threshold; i++) {
     wins.push(diagonal);
     wins.push(anti);
-    shift = (i + 1) % threshold === 0 ? biThreshold : 1n;
+    shift = (i + 1) % threshold === 0 ? biSizeThresholdDifference : 1n;
     diagonal = diagonal << shift;
     anti = anti << shift;
   }
