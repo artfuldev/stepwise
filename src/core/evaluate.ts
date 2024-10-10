@@ -1,4 +1,5 @@
 import type { Board } from "../t3en";
+import { assurances } from "./assurances";
 import { wins } from "./wins";
 
 let ones_cache = new Map<bigint, number>();
@@ -25,6 +26,14 @@ export const evaluate = (board: Board, winLength: number): number => {
     if (o === line) return Number.NEGATIVE_INFINITY;
     score += ones(x);
     score -= ones(o);
+  }
+  if (winLength >= board.size) return score;
+  for (const [playable, played] of assurances(board.size, winLength)) {
+    if ((board.playable & playable) !== playable) continue;
+    const x = played & board.x;
+    if (x === played) return Number.POSITIVE_INFINITY;
+    const o = played & board.o;
+    if (o === played) return Number.NEGATIVE_INFINITY;
   }
   return score;
 };
