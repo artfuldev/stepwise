@@ -11,7 +11,7 @@ const random = <A>(as: A[]): A => {
 export const best = (
   board: Board,
   side: Side,
-  winLength: number
+  winLength = board.size
 ): Observable<Move> => {
   const evaluations = moves(board)
     .map(
