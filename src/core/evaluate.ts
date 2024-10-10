@@ -31,9 +31,9 @@ export const evaluate = (board: Board, winLength: number): number => {
   for (const [playable, played] of assurances(board.size, winLength)) {
     if ((board.playable & playable) !== playable) continue;
     const x = played & board.x;
-    if (x === played) return Number.POSITIVE_INFINITY;
+    if (x === played) return Number.MAX_SAFE_INTEGER;
     const o = played & board.o;
-    if (o === played) return Number.NEGATIVE_INFINITY;
+    if (o === played) return Number.MIN_SAFE_INTEGER;
   }
   return score;
 };
