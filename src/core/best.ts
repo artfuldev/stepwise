@@ -16,9 +16,9 @@ export const best = (
   const evaluations = moves(board)
     .map(
       (move) =>
-        [move, evaluate(play(board, side, move), side, winLength)] as const
+        [move, evaluate(play(board, side, move), winLength)] as const
     )
-    .sort(([, a], [, b]) => b - a);
+    .sort(([, a], [, b]) => (side === Side.X ? b - a : a - b));
   if (evaluations.length === 0)
     return throwError(() => new Error("no playable cells"));
   const best_score = evaluations[0][1];
