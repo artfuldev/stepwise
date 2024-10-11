@@ -4,6 +4,6 @@ import { termination } from "./termination";
 import memoize from "lodash.memoize";
 
 export const terminal = memoize(
-  (game: Game): boolean => !termination(game),
+  (game: Game): boolean => !!termination(game),
   key
 );
