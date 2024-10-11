@@ -1,1 +1,2 @@
-export { Minimax } from "./minimax";
+export * from "./minimax";
+export * from "./alpha-beta";

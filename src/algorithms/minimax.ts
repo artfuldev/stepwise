@@ -1,10 +1,10 @@
-type Minimax<A> = (node: A, depth: number, maximizing: boolean) => number;
+import type * as M from "./minimax.type";
 
 export const Minimax = {
   create:
     <A>(terminal: (a: A) => boolean) =>
     (children: (a: A) => Iterable<A>) =>
-    (heuristic: (a: A) => number): Minimax<A> => {
+    (heuristic: (a: A) => number): M.Minimax<A> => {
       const minimax = (node: A, depth: number, maximizing: boolean): number => {
         if (depth === 0 || terminal(node)) return heuristic(node);
         if (maximizing) {
