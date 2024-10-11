@@ -1,7 +1,7 @@
 import { of, throwError, type Observable } from "rxjs";
 import { Side, type Board } from "../t3en";
 import { moves, play, type Move } from "./move";
-import { evaluate } from "./evaluate";
+import { evaluate } from "../evaluation";
 
 const random = <A>(as: A[]): A => {
   const index = Math.floor(Math.random() * as.length);

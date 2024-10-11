@@ -27,6 +27,7 @@ export const evaluate = (board: Board, winLength: number): number => {
     score += ones(x);
     score -= ones(o);
   }
+  if (board.playable === 0n) return 0;
   if (winLength >= board.size) return score;
   for (const [playable, played] of assurances(board.size, winLength)) {
     if ((board.playable & playable) !== playable) continue;
