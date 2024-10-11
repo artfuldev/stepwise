@@ -1,0 +1,1 @@
+export { Minimax } from "./minimax";
