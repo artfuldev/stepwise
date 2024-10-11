@@ -1,9 +1,9 @@
-import { type Board, Side } from "../t3en";
+import { Side } from "../t3en";
 import type { Game } from "./game";
 
 export type Move = bigint;
 
-export const moves = ({ playable, size }: Board): Move[] => {
+export const moves = ({ playable, size }: Game): Move[] => {
   const moves: Move[] = [];
   const max = size ** 2;
   let move = 1n;
