@@ -4,20 +4,18 @@ import { assurances } from "./assurances";
 import { ones } from "./ones";
 import { wins } from "./wins";
 import { key } from "./key";
+import { Termination, termination } from "./termination";
 
 export const evaluate = memoize((game: Game): number => {
-  const lines = wins(game.size, game.winLength);
+  let result = termination(game);
+  if (result === Termination.XWon) return Number.POSITIVE_INFINITY;
+  if (result === Termination.OWon) return Number.NEGATIVE_INFINITY;
+  if (result === Termination.Drawn) return 0;
   let score = 0;
-  for (const line of lines) {
-    const x = line & game.x;
-    if (x === line) return Number.POSITIVE_INFINITY;
-    const o = line & game.o;
-    if (o === line) return Number.NEGATIVE_INFINITY;
-    score += ones(x);
-    score -= ones(o);
+  for (const win of wins(game.size, game.winLength)) {
+    score += ones(win & game.x);
+    score -= ones(win & game.o);
   }
-  if (game.playable === 0n) return 0;
-  if (game.winLength >= game.size) return score;
   for (const [playable, played] of assurances(game.size, game.winLength)) {
     if ((game.playable & playable) !== playable) continue;
     const x = played & game.x;
