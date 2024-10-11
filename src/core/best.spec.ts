@@ -29,6 +29,16 @@ describe("best", () => {
   });
 
   test("should return assured win move for x", (done) => {
+    const expected: Move[] = [6n].map((x) => 1n << x);
+    best(game(board("x2_/_xo/2_o"), Side.X, 3)).subscribe(
+      (move) => {
+        expect(move).toBeOneOf(expected);
+        done();
+      }
+    );
+  });
+
+  test("should return assured win move for x", (done) => {
     const expected: Move[] = [8n, 40n].map((x) => 1n << x);
     best(game(board("7_/3_3o_/2_x4_/3_x3_/4_x2_/7_/7_"), Side.X, 5)).subscribe(
       (move) => {
