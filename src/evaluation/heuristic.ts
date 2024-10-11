@@ -6,7 +6,7 @@ import { wins } from "./wins";
 import { key } from "./key";
 import { Termination, termination } from "./termination";
 
-export const evaluate = memoize((game: Game): number => {
+export const heuristic = memoize((game: Game): number => {
   let result = termination(game);
   if (result === Termination.XWon) return Number.POSITIVE_INFINITY;
   if (result === Termination.OWon) return Number.NEGATIVE_INFINITY;

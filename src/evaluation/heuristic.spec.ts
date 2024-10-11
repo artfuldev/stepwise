@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { evaluate } from "./evaluate";
+import { heuristic } from "./heuristic";
 
-describe("evaluate", () => {
+describe("heuristic", () => {
   test("should evaluate x win as positive infinity", () => {
     expect(
-      evaluate({
+      heuristic({
         size: 3,
         playable: 0n,
         x: (1n << 4n) - 1n,
@@ -17,7 +17,7 @@ describe("evaluate", () => {
 
   test("should evaluate o win as negative infinity", () => {
     expect(
-      evaluate({
+      heuristic({
         size: 3,
         playable: 0n,
         o: (1n << 4n) - 1n,
@@ -30,7 +30,7 @@ describe("evaluate", () => {
 
   test("should evaluate unplayable board that's not won as zero", () => {
     expect(
-      evaluate({
+      heuristic({
         size: 3,
         playable: 0n,
         o: 0n,
