@@ -4,6 +4,7 @@ type Win = bigint;
 
 export const wins = memoize(
   (size: number, winLength: number): Win[] => {
+    if (winLength < 1 || winLength > size) return [];
     const threshold = size - winLength + 1;
     const wins: Win[] = [];
 
