@@ -1,4 +1,5 @@
-import type { Board, Side } from "../t3en";
+import { type Board, Side } from "../t3en";
+import type { Game } from "./game";
 
 export type Move = bigint;
 
@@ -13,10 +14,14 @@ export const moves = ({ playable, size }: Board): Move[] => {
   return moves;
 };
 
-export const play = (board: Board, side: Side, move: Move): Board => {
-  const mask = (1n << BigInt(board.size * board.size)) - 1n;
-  const playable = board.playable & mask & (~(move & mask) & mask);
-  const next = board[side] | move;
-  const next_board ={ ...board, playable, [side]: next };
-  return next_board;
+export const play = (game: Game, move: Move): Game => {
+  const mask = (1n << BigInt(game.size * game.size)) - 1n;
+  const playable = game.playable & mask & (~(move & mask) & mask);
+  const side = game.xToPlay ? Side.X : Side.O;
+  return {
+    ...game,
+    playable,
+    [side]: game[side] | move,
+    xToPlay: !game.xToPlay,
+  };
 };

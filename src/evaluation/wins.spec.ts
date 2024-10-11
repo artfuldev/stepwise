@@ -13,7 +13,7 @@ describe("wins", () => {
       "100010001",
       "001010100",
     ].map((x) => BigInt("0b" + x));
-    const actual = wins(3);
+    const actual = wins(3, 3);
     expect(actual.sort()).toEqual(expected.sort());
   });
 

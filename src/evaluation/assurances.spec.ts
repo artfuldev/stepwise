@@ -13,7 +13,7 @@ describe("assurances", () => {
       ["100000001", "000010000"],
       ["001000100", "000010000"],
     ].map(([x, y]) => [BigInt("0b" + x), BigInt("0b" + y)] as const);
-    const actual = assurances(3);
+    const actual = assurances(3, 2);
     expect(actual.sort()).toEqual(expected.sort());
   });
 

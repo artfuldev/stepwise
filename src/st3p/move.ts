@@ -15,6 +15,7 @@ import {
 } from "rxjs";
 import { position } from "../core/position";
 import { Duration } from "luxon";
+import { Side } from "../t3en";
 
 type Infinite = ["infinite"];
 const Infinite: Infinite = ["infinite"];
@@ -120,7 +121,7 @@ const duration = ([, [{ playable, size }], time]: Move): Duration => {
 
 export const move = (move: Move): Sinks => {
   const [, [board, side], , winLength] = move;
-  const best$ = best(board, side, winLength).pipe(
+  const best$ = best({ ...board, xToPlay: side === Side.X, winLength }).pipe(
     map(position(board)),
     map((pos) => ["best", pos].join(" ")),
     first(),

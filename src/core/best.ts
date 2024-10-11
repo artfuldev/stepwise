@@ -2,6 +2,7 @@ import { of, throwError, type Observable } from "rxjs";
 import { Side, type Board } from "../t3en";
 import { moves, play, type Move } from "./move";
 import { evaluate } from "../evaluation";
+import type { Game } from "./game";
 
 const random = <A>(as: A[]): A => {
   const index = Math.floor(Math.random() * as.length);
@@ -9,15 +10,13 @@ const random = <A>(as: A[]): A => {
 };
 
 export const best = (
-  board: Board,
-  side: Side,
-  winLength = board.size
+  game: Game
 ): Observable<Move> => {
-  const evaluations = moves(board)
+  const evaluations = moves(game)
     .map(
-      (move) => [move, evaluate(play(board, side, move), winLength)] as const
+      (move) => [move, evaluate(play(game, move))] as const
     )
-    .sort(([, a], [, b]) => (side === Side.X ? b - a : a - b));
+    .sort(([, a], [, b]) => (game.xToPlay ? b - a : a - b));
   if (evaluations.length === 0)
     return throwError(() => new Error("no playable cells"));
   const best_score = evaluations[0][1];
