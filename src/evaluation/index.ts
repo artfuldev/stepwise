@@ -1,1 +1,1 @@
-export { heuristic } from "./heuristic";
+export { evaluate } from "./evaluate";

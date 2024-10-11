@@ -1,7 +1,6 @@
 import { of, throwError, type Observable } from "rxjs";
-import { Side, type Board } from "../t3en";
 import { moves, play, type Move } from "./move";
-import { heuristic } from "../evaluation";
+import { evaluate } from "../evaluation";
 import type { Game } from "./game";
 
 const random = <A>(as: A[]): A => {
@@ -11,7 +10,7 @@ const random = <A>(as: A[]): A => {
 
 export const best = (game: Game): Observable<Move> => {
   const evaluations = moves(game)
-    .map((move) => [move, heuristic(play(game)(move))] as const)
+    .map((move) => [move, evaluate(play(game)(move))] as const)
     .sort(([, a], [, b]) => (game.xToPlay ? b - a : a - b));
   if (evaluations.length === 0)
     return throwError(() => new Error("no playable cells"));
