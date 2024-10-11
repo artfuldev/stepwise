@@ -8,13 +8,13 @@ export const Minimax = {
       const minimax = (node: A, depth: number, maximizing: boolean): number => {
         if (depth === 0 || terminal(node)) return heuristic(node);
         if (maximizing) {
-          let value = Number.NEGATIVE_INFINITY;
+          let value = Number.MIN_SAFE_INTEGER;
           for (const child of children(node)) {
             value = Math.max(value, minimax(child, depth - 1, false));
           }
           return value;
         } else {
-          let value = Number.POSITIVE_INFINITY;
+          let value = Number.MAX_SAFE_INTEGER;
           for (const child of children(node)) {
             value = Math.min(value, minimax(child, depth - 1, true));
           }
