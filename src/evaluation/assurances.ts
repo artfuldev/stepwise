@@ -6,6 +6,7 @@ type Assurance = readonly [Playable, Played];
 
 export const assurances = memoize(
   (size: number, assurance: number): Assurance[] => {
+    if (assurance <= 2 || assurance >= size) return [];
     let winLength = assurance + 1;
     const threshold = size - winLength + 1;
     const assurances: Assurance[] = [];
