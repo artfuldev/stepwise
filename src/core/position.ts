@@ -1,11 +1,12 @@
-import type { Board } from "../t3en";
+import type { Board } from '../t3en';
 
-export type Move = BigInt;
+export type Move = bigint;
 
-const column = (index: number) => {
-  let result = "";
+const column = (_index: number) => {
+  let result = '';
+  let index = _index;
   do {
-    let remainder = index % 26;
+    const remainder = index % 26;
     result = String.fromCharCode(97 + remainder) + result;
     index = Math.floor(index / 26) - 1;
   } while (index >= 0);
@@ -18,7 +19,7 @@ export const position =
   (move: Move): string => {
     const index = move
       .toString(2)
-      .padStart(size * size, "0")
-      .indexOf("1");
-    return [column(index % size), Math.floor(index / size) + 1].join("");
+      .padStart(size * size, '0')
+      .indexOf('1');
+    return [column(index % size), Math.floor(index / size) + 1].join('');
   };
