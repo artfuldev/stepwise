@@ -1,20 +1,23 @@
 import memoize from "lodash.memoize";
 import { Side } from "../t3en";
 import type { Game } from "./game";
+import { zeros } from "./zeros";
 
 export type Move = bigint;
 
-export const moves = memoize(
-  ({ playable, size }: Game): Move[] => {
-    const moves: Move[] = [];
-    const max = 1n << BigInt(size ** 2);
-    for (let i = 1n; i < max; i = i << 1n) {
-      if ((i & playable) === i) moves.push(i);
+const _moves = memoize((playable: bigint): Move[] => {
+  const moves: Move[] = [];
+  let move: Move = BigInt(1) << zeros(playable);
+  while (move <= playable) {
+    if ((move & playable) === move) {
+      moves.push(move);
     }
-    return moves;
-  },
-  ({ playable, size }: Game): string => `${size}:${playable}`
-);
+    move <<= 1n;
+  }
+  return moves;
+});
+
+export const moves = ({ playable }: Game): Move[] => _moves(playable);
 
 export const play =
   (game: Game) =>
