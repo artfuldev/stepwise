@@ -120,8 +120,11 @@ const duration = ([, [{ playable, size }], time]: Move): Duration => {
 };
 
 export const move = (move: Move): Sinks => {
-  const [, [board, side], , winLength] = move;
-  const best$ = best({ ...board, xToPlay: side === Side.X, winLength }).pipe(
+  const [, [board, side], time, winLength] = move;
+  const best$ = best(
+    { ...board, xToPlay: side === Side.X, winLength },
+    duration(move)
+  ).pipe(
     map(position(board)),
     map((pos) => ["best", pos].join(" ")),
     first(),
