@@ -23,7 +23,7 @@ export const play =
   (game: Game) =>
   (move: Move): Game => {
     const mask = (1n << BigInt(game.size * game.size)) - 1n;
-    const playable = game.playable & mask & (~(move & mask) & mask);
+    const playable = game.playable & mask ^ move;
     const side = game.xToPlay ? Side.X : Side.O;
     return {
       ...game,
