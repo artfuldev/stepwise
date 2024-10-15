@@ -8,7 +8,6 @@ import { position } from '../core/position';
 import { string } from '../t3en/board';
 import { heuristic } from './heuristic';
 import { ones } from './ones';
-import { score } from './score';
 import { terminal } from './terminal';
 
 const log = debug('stepwise').extend('pvs');
