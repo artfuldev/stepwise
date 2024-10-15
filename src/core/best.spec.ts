@@ -55,4 +55,17 @@ describe('best', () => {
       },
     );
   });
+
+  test('should return forks when available', (done) => {
+    const expected: Move[] = [2n, 24n].map((x) => 1n << x);
+    const _game = game(
+      board('x6_/_x3ox_/2_x_x2_/_o5_/_ox4_/_o2_3o/_3x3_'),
+      Side.X,
+      5,
+    );
+    best(_game).subscribe((move) => {
+      expect(move).toBeOneOf(expected);
+      done();
+    });
+  });
 });
