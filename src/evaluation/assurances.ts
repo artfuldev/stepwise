@@ -1,4 +1,5 @@
-import memoize from "lodash.memoize";
+import memoize from 'lodash.memoize';
+import { size_and_win_length_primitives } from './keys';
 
 type Playable = bigint;
 type Played = bigint;
@@ -7,14 +8,14 @@ type Assurance = readonly [Playable, Played];
 export const assurances = memoize(
   (size: number, assurance: number): Assurance[] => {
     if (assurance < 1 || assurance >= size) return [];
-    let winLength = assurance + 1;
+    const winLength = assurance + 1;
     const threshold = size - winLength + 1;
     const assurances: Assurance[] = [];
 
     const biSize = BigInt(size);
     const biThreshold = BigInt(threshold);
     const biAssurance = BigInt(assurance);
-    let biSizeThresholdDifference = biSize - biThreshold + 1n;
+    const biSizeThresholdDifference = biSize - biThreshold + 1n;
     let horizontal_playable = (1n << biAssurance) + 1n;
     let horizontal_played = (1n << biAssurance) - 2n;
     let vertical_playable = 1n;
@@ -67,5 +68,5 @@ export const assurances = memoize(
     }
     return assurances;
   },
-  (size: number, assurance: number): string => `${size}:${assurance}`
+  size_and_win_length_primitives,
 );
