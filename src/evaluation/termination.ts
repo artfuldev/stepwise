@@ -1,7 +1,7 @@
-import type { Game } from "../core/game";
-import { key } from "./key";
-import { wins } from "./wins";
-import memoize from "lodash.memoize";
+import memoize from 'lodash.memoize';
+import type { Game } from '../core/game';
+import { board } from './keys';
+import { wins } from './wins';
 
 export enum Termination {
   None = 0,
@@ -17,4 +17,4 @@ export const termination = memoize((game: Game): Termination => {
   }
   if (game.playable === 0n) return Termination.Drawn;
   return Termination.None;
-}, key);
+}, board);
