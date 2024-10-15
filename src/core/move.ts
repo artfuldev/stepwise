@@ -1,8 +1,8 @@
-import memoize from "lodash.memoize";
-import { Side } from "../t3en";
-import type { Game } from "./game";
-import { zeros } from "./zeros";
-import { invert } from "./invert";
+import memoize from 'lodash.memoize';
+import { Side } from '../t3en';
+import type { Game } from './game';
+import { not } from './not';
+import { zeros } from './zeros';
 
 export type Move = bigint;
 
@@ -23,7 +23,7 @@ export const moves = ({ playable }: Game): Move[] => _moves(playable);
 export const play =
   (game: Game) =>
   (move: Move): Game => {
-    const playable = game.playable & invert(move, game.size ** 2);
+    const playable = game.playable & not(move, game.size ** 2);
     const side = game.xToPlay ? Side.X : Side.O;
     return {
       ...game,
