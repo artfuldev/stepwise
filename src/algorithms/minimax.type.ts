@@ -1,1 +1,5 @@
-export type Minimax<A> = (node: A, depth: number, maximizing: boolean) => number;
+export type Minimax<A> = (
+  node: A,
+  depth: number,
+  maximizing: boolean,
+) => number;

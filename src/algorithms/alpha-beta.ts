@@ -1,4 +1,4 @@
-import type * as M from "./minimax.type";
+import type * as M from './minimax.type';
 
 export const AlphaBeta = {
   create:
@@ -8,18 +8,19 @@ export const AlphaBeta = {
       const minimax = (
         node: A,
         depth: number,
-        alpha: number,
-        beta: number,
-        maximizing: boolean
+        _alpha: number,
+        _beta: number,
+        maximizing: boolean,
       ): number => {
         if (depth === 0 || terminal(node)) return heuristic(node);
-
+        let alpha = _alpha;
+        let beta = _beta;
         if (maximizing) {
           let value = Number.MIN_SAFE_INTEGER;
           for (const child of children(node)) {
             value = Math.max(
               value,
-              minimax(child, depth - 1, alpha, beta, false)
+              minimax(child, depth - 1, alpha, beta, false),
             );
             alpha = Math.max(alpha, value);
             if (alpha >= beta) {
@@ -27,20 +28,16 @@ export const AlphaBeta = {
             }
           }
           return value;
-        } else {
-          let value = Number.MAX_SAFE_INTEGER;
-          for (const child of children(node)) {
-            value = Math.min(
-              value,
-              minimax(child, depth - 1, alpha, beta, true)
-            );
-            beta = Math.min(beta, value);
-            if (beta <= alpha) {
-              break; // Alpha cut-off
-            }
-          }
-          return value;
         }
+        let value = Number.MAX_SAFE_INTEGER;
+        for (const child of children(node)) {
+          value = Math.min(value, minimax(child, depth - 1, alpha, beta, true));
+          beta = Math.min(beta, value);
+          if (beta <= alpha) {
+            break; // Alpha cut-off
+          }
+        }
+        return value;
       };
       return (node: A, depth: number, maximizing: boolean): number => {
         return minimax(
@@ -48,7 +45,7 @@ export const AlphaBeta = {
           depth,
           Number.MIN_SAFE_INTEGER,
           Number.MAX_SAFE_INTEGER,
-          maximizing
+          maximizing,
         );
       };
     },

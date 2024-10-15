@@ -1,4 +1,4 @@
-import type * as M from "./minimax.type";
+import type * as M from './minimax.type';
 
 export const AlphaBetaMutable = {
   create:
@@ -10,19 +10,20 @@ export const AlphaBetaMutable = {
       const minimax = (
         node: A,
         depth: number,
-        alpha: number,
-        beta: number,
-        maximizing: boolean
+        _alpha: number,
+        _beta: number,
+        maximizing: boolean,
       ): number => {
         if (depth === 0 || terminal(node)) return heuristic(node);
-
+        let alpha = _alpha;
+        let beta = _beta;
         if (maximizing) {
           let value = Number.MIN_SAFE_INTEGER;
           for (const edge of edges(node)) {
             depart(node, edge);
             value = Math.max(
               value,
-              minimax(node, depth - 1, alpha, beta, false)
+              minimax(node, depth - 1, alpha, beta, false),
             );
             arrive(node, edge);
             alpha = Math.max(alpha, value);
@@ -31,22 +32,18 @@ export const AlphaBetaMutable = {
             }
           }
           return value;
-        } else {
-          let value = Number.MAX_SAFE_INTEGER;
-          for (const edge of edges(node)) {
-            depart(node, edge);
-            value = Math.min(
-              value,
-              minimax(node, depth - 1, alpha, beta, true)
-            );
-            arrive(node, edge);
-            beta = Math.min(beta, value);
-            if (beta <= alpha) {
-              break; // Alpha cut-off
-            }
-          }
-          return value;
         }
+        let value = Number.MAX_SAFE_INTEGER;
+        for (const edge of edges(node)) {
+          depart(node, edge);
+          value = Math.min(value, minimax(node, depth - 1, alpha, beta, true));
+          arrive(node, edge);
+          beta = Math.min(beta, value);
+          if (beta <= alpha) {
+            break; // Alpha cut-off
+          }
+        }
+        return value;
       };
       return (node: A, depth: number, maximizing: boolean): number => {
         return minimax(
@@ -54,7 +51,7 @@ export const AlphaBetaMutable = {
           depth,
           Number.MIN_SAFE_INTEGER,
           Number.MAX_SAFE_INTEGER,
-          maximizing
+          maximizing,
         );
       };
     },
