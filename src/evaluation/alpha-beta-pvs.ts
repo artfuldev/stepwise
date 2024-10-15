@@ -28,18 +28,19 @@ const depth = (game: Game, duration: Duration): number => {
   const ns = end - start;
   const allowed_ns = BigInt(duration.toMillis() - TOLERANCE.toMillis()) * 1000n;
   const positions_max = allowed_ns / ns;
-  let pos = 1;
-  for (let depth = 0; depth < max; depth++) {
-    let next = pos * (max - depth);
-    if (next > positions_max) return depth;
-    pos = next;
+  let depth = 1;
+  let positions = max;
+  for (; depth < max; depth++) {
+    let next = positions * (max - depth);
+    if (next > positions_max) break;
+    positions = next;
   }
-  return 1;
+  return depth;
 }
 
 export const evaluate = (game: Game, duration: Duration) => {
   log('input\n %O', string(game));
-  const selected = Math.max(2, depth(game, duration));
+  const selected = depth(game, duration);
   log('info depth: %i', selected);
   const [pv, score] = f(game, selected, game.xToPlay);
   const result = pv.reduce(make, game);
