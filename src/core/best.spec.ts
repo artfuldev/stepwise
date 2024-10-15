@@ -37,13 +37,11 @@ describe('best', () => {
   });
 
   test('should return assured win move for x', (done) => {
-    const expected: Move[] = [8n, 40n].map((x) => 1n << x);
-    best(game(board('7_/3_3o_/2_x4_/3_x3_/4_x2_/7_/7_'), Side.X, 5)).subscribe(
-      (move) => {
-        expect(move).toBeOneOf(expected);
-        done();
-      },
-    );
+    const expected: Move = BigInt(0b1000000);
+    best(game(board('5_/_x2o_/2_x2_/5_/5_'), Side.X, 4)).subscribe((move) => {
+      expect(move).toBe(expected);
+      done();
+    });
   });
 
   test('should return winning move over available assured moves', (done) => {
