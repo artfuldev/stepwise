@@ -1,6 +1,6 @@
-import { ParseResult, type Parser } from "../parser";
-import { Cell } from "./cell";
-import type { Side } from "./side";
+import { ParseResult, type Parser } from '../parser';
+import { Cell } from './cell';
+import type { Side } from './side';
 
 export type Board = {
   size: number;
@@ -9,7 +9,7 @@ export type Board = {
   [Side.O]: bigint;
 };
 
-const expected = new Set("0123456789/_.xo".split(""));
+const expected = new Set('0123456789/_.xo'.split(''));
 
 const cells = new Set([
   Cell.Playable,
@@ -21,30 +21,21 @@ const cells = new Set([
 const board = (cells2d: Cell[][], remaining: string): ParseResult<Board> => {
   const size = cells2d[0].length;
   if (cells2d.length !== size || cells2d.some((row) => row.length !== size))
-    return ParseResult.Failure(`Not a square grid`);
+    return ParseResult.Failure('Not a square grid');
   const playable = BigInt(
-    "0b" +
-      cells2d
-        .flatMap((row) =>
-          row.map((cell) => (cell === Cell.Playable ? "1" : "0"))
-        )
-        .join("")
+    `0b${cells2d
+      .flatMap((row) => row.map((cell) => (cell === Cell.Playable ? '1' : '0')))
+      .join('')}`,
   );
   const x = BigInt(
-    "0b" +
-      cells2d
-        .flatMap((row) =>
-          row.map((cell) => (cell === Cell.PlayedX ? "1" : "0"))
-        )
-        .join("")
+    `0b${cells2d
+      .flatMap((row) => row.map((cell) => (cell === Cell.PlayedX ? '1' : '0')))
+      .join('')}`,
   );
   const o = BigInt(
-    "0b" +
-      cells2d
-        .flatMap((row) =>
-          row.map((cell) => (cell === Cell.PlayedO ? "1" : "0"))
-        )
-        .join("")
+    `0b${cells2d
+      .flatMap((row) => row.map((cell) => (cell === Cell.PlayedO ? '1' : '0')))
+      .join('')}`,
   );
   return ParseResult.Success({ size, playable, x, o }, remaining);
 };
@@ -56,13 +47,13 @@ export const parse: Parser<Board> = (str) => {
   for (let i = 0; i < str.length; i++) {
     const char = str[i];
     if (!expected.has(char)) return board(cells2d, str.slice(i));
-    if (char === "/") {
+    if (char === '/') {
       cells2d.push([]);
       x++;
       count = 0;
       continue;
     }
-    const digit = parseInt(char);
+    const digit = Number.parseInt(char);
     if (Number.isSafeInteger(digit)) {
       count *= 10;
       count += digit;
@@ -76,26 +67,26 @@ export const parse: Parser<Board> = (str) => {
     }
     count = 0;
   }
-  return board(cells2d, "");
+  return board(cells2d, '');
 };
 
 export const string = ({ playable, x, o, size }: Board): string => {
   const strings = {
-    playable: playable.toString(2).padStart(size * size, "0"),
-    x: x.toString(2).padStart(size * size, "0"),
-    o: o.toString(2).padStart(size * size, "0"),
+    playable: playable.toString(2).padStart(size * size, '0'),
+    x: x.toString(2).padStart(size * size, '0'),
+    o: o.toString(2).padStart(size * size, '0'),
   };
   return strings.playable
-    .split("")
+    .split('')
     .map(
       (p, i) =>
-        (strings.x.charAt(i) === "1"
-          ? "x"
-          : strings.o.charAt(i) === "1"
-          ? "o"
-          : p === "1"
-          ? "_"
-          : ".") + (i % size === size - 1 ? "\n" : " ")
+        (strings.x.charAt(i) === '1'
+          ? 'x'
+          : strings.o.charAt(i) === '1'
+            ? 'o'
+            : p === '1'
+              ? '_'
+              : '.') + (i % size === size - 1 ? '\n' : ' '),
     )
-    .join("");
+    .join('');
 };
