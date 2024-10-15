@@ -2,6 +2,7 @@ import memoize from "lodash.memoize";
 import { Side } from "../t3en";
 import type { Game } from "./game";
 import { zeros } from "./zeros";
+import { invert } from "./invert";
 
 export type Move = bigint;
 
@@ -22,8 +23,7 @@ export const moves = ({ playable }: Game): Move[] => _moves(playable);
 export const play =
   (game: Game) =>
   (move: Move): Game => {
-    const mask = (1n << BigInt(game.size * game.size)) - 1n;
-    const playable = game.playable & mask ^ move;
+    const playable = game.playable & invert(move, game.size ** 2);
     const side = game.xToPlay ? Side.X : Side.O;
     return {
       ...game,

@@ -1,4 +1,5 @@
 import { Side, type Board } from "../t3en";
+import { invert } from "./invert";
 import type { Move } from "./move";
 
 export type Game = Board & {
@@ -8,8 +9,7 @@ export type Game = Board & {
 
 export const make =
   (game: Game, move: Move): Game => {
-    const mask = (1n << BigInt(game.size * game.size)) - 1n;
-    game.playable &= mask ^ move;
+    game.playable &= invert(move, game.size);
     const side = game.xToPlay ? Side.X : Side.O;
     game.xToPlay = !game.xToPlay;
     game[side] |= move;
@@ -18,10 +18,9 @@ export const make =
 
 export const unmake =
   (game: Game, move: Move): Game => {
-    const mask = (1n << BigInt(game.size * game.size)) - 1n;
     game.playable |= move;
     const side = game.xToPlay ? Side.O : Side.X;
-    game[side] &= mask ^ move;
+    game[side] &= invert(move, game.size);
     game.xToPlay = !game.xToPlay;
     return game;
   };
