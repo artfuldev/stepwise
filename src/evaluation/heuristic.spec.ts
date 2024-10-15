@@ -40,4 +40,30 @@ describe('heuristic', () => {
     const close = game(board('x2_/_2x/_2o'), Side.O);
     expect(heuristic(close)).toBeNegative();
   });
+
+  test('should score b2 better than c3 on 3x3', () => {
+    const b2 = game(board('3_/_x_/3_'), Side.O);
+    const c3 = game(board('3_/3_/2_x'), Side.O);
+    expect(heuristic(b2)).toBeGreaterThan(heuristic(c3));
+  });
+
+  test('should score multiple wins as better', () => {
+    const b2 = game(board('3_/_x_/3_'), Side.O);
+    const c3 = game(board('3_/3_/2_x'), Side.O);
+    expect(heuristic(b2)).toBeGreaterThan(heuristic(c3));
+  });
+
+  test('should score multiple wins for x way more positive than otherwise', () => {
+    const d4 = game(
+      board('x6_/_x3ox_/2_x_x2_/_o_x3_/_ox4_/_o2_3o/_3x3_'),
+      Side.O,
+      5,
+    );
+    const d3 = game(
+      board('x6_/_x3ox_/2_3x2_/_o5_/_ox4_/_o2_3o/_3x3_'),
+      Side.O,
+      5,
+    );
+    expect(heuristic(d4)).toBeGreaterThan(heuristic(d3));
+  });
 });
