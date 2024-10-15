@@ -1,6 +1,6 @@
 import { of, throwError, type Observable } from "rxjs";
 import { moves, play, type Move } from "./move";
-import { evaluate } from "../evaluation/alpha-beta";
+import { evaluate } from "../evaluation/alpha-beta-mutable";
 import type { Game } from "./game";
 
 const random = <A>(as: A[]): A => {
