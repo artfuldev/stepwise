@@ -1,12 +1,13 @@
+import type { Bits } from '../bits';
 import { ParseResult, type Parser } from '../parser';
 import { Cell } from './cell';
 import type { Side } from './side';
 
 export type Board = {
   size: number;
-  playable: bigint;
-  [Side.X]: bigint;
-  [Side.O]: bigint;
+  playable: Bits;
+  [Side.X]: Bits;
+  [Side.O]: Bits;
 };
 
 const expected = new Set('0123456789/_.xo'.split(''));
