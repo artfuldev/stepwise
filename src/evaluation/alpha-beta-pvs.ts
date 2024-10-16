@@ -3,15 +3,11 @@ import debug from 'debug';
 import { Duration } from 'luxon';
 import { AlphaBetaPrincipleVariationSearch } from '../algorithms';
 import { type Game, make, unmake } from '../core/game';
-import { moves } from '../core/move';
-import { position } from '../core/position';
-import { string } from '../t3en/board';
+import { type Move, moves } from '../core/move';
 import { heuristic } from './heuristic';
 import { ones } from './ones';
 import { shuffle } from './shuffle';
 import { terminal } from './terminal';
-
-const log = debug('stepwise').extend('pvs');
 
 const f = AlphaBetaPrincipleVariationSearch.create(terminal)((game) =>
   shuffle(moves(game)),
@@ -37,15 +33,8 @@ const depth = (game: Game, duration: Duration): number => {
   return depth;
 };
 
-export const evaluate = (game: Game, duration: Duration) => {
-  log('input\n %O', string(game));
+export const evaluate = (game: Game, duration: Duration): Move => {
   const selected = depth(game, duration);
-  log('info depth: %i', selected);
-  const [pv, score] = f(game, selected, game.xToPlay);
-  const result = pv.reduce(make, game);
-  log('info score: %i', score);
-  log('info pv: %s', pv.map(position(result)).join(','));
-  log('info board:');
-  log(string(result));
-  return pv[0];
+  const [[pv]] = f(game, selected, game.xToPlay);
+  return pv;
 };
