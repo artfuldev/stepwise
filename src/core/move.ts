@@ -1,12 +1,12 @@
 import memoize from 'lodash.memoize';
+import { type Bits, not } from '../bits';
 import { Side } from '../t3en';
 import type { Game } from './game';
-import { not } from './not';
 import { zeros } from './zeros';
 
-export type Move = bigint;
+export type Move = Bits;
 
-const _moves = memoize((playable: bigint): Move[] => {
+const _moves = memoize((playable: Bits): Move[] => {
   const moves: Move[] = [];
   let move: Move = BigInt(1) << zeros(playable);
   while (move <= playable) {

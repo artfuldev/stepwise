@@ -1,6 +1,6 @@
+import { not } from '../bits';
 import { type Board, Side } from '../t3en';
 import type { Move } from './move';
-import { not } from './not';
 
 export type Game = Board & {
   xToPlay: boolean;
