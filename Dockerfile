@@ -24,14 +24,14 @@ COPY . .
 # [optional] tests & build
 ENV NODE_ENV=production
 RUN bun test
-# RUN bun run build
+RUN bun build src/index.ts --target node --outdir dist
 
 # copy production dependencies and source code into final image
-FROM base AS release
+FROM node:20 AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/src src
+COPY --from=prerelease /usr/src/app/dist dist
 COPY --from=prerelease /usr/src/app/package.json .
 
 # run the app
-USER bun
-ENTRYPOINT [ "bun", "run", "src/index.ts" ]
+USER node
+ENTRYPOINT [ "node", "dist/index.js" ]
