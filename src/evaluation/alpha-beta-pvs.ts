@@ -1,4 +1,3 @@
-import { hrtime } from 'node:process';
 import { Duration } from 'luxon';
 import { AlphaBetaPrincipleVariationSearch } from '../algorithms';
 import { ones } from '../bits';
@@ -16,11 +15,11 @@ const TOLERANCE = Duration.fromMillis(100);
 
 const depth = (game: Game, duration: Duration): number => {
   const max = ones(game.playable);
-  const start = hrtime.bigint();
+  const start = performance.now();
   heuristic(game);
-  const end = hrtime.bigint();
+  const end = performance.now();
   const ns = end - start;
-  const allowed_ns = BigInt(duration.toMillis() - TOLERANCE.toMillis()) * 1000n;
+  const allowed_ns = duration.toMillis() - TOLERANCE.toMillis();
   const positions_max = allowed_ns / ns;
   let depth = 1;
   let positions = max;
