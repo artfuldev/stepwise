@@ -1,7 +1,7 @@
 import memoize from 'lodash.memoize';
+import { ones } from '../bits';
 import type { Game } from '../core/game';
 import { game } from './keys';
-import { ones } from './ones';
 import { transpositions } from './transpositions';
 import { wins } from './wins';
 

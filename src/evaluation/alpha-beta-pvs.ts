@@ -1,11 +1,10 @@
 import { hrtime } from 'node:process';
-import debug from 'debug';
 import { Duration } from 'luxon';
 import { AlphaBetaPrincipleVariationSearch } from '../algorithms';
+import { ones } from '../bits';
 import { type Game, make, unmake } from '../core/game';
 import { type Move, moves } from '../core/move';
 import { heuristic } from './heuristic';
-import { ones } from './ones';
 import { shuffle } from './shuffle';
 import { terminal } from './terminal';
 
