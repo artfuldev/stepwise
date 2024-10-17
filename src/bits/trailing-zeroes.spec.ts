@@ -6,7 +6,7 @@ describe('trailing-zeroes', () => {
     expect(trailing_zeroes(0n)).toBe(0n);
   });
 
-  test('should return trailing zeros', () => {
+  test('should return count of trailing zeros', () => {
     expect(trailing_zeroes(1001000n)).toBe(3n);
   });
 });
